@@ -1,15 +1,19 @@
 import React from 'react'
 import Gif from 'components/Gif/Gif'
-import useGlobalGif from 'Hooks/useGlobalGif'
+import useSingleGif from 'Hooks/useSingleGif.js'
+import Spinner from 'components/Spinner'
+import { Redirect } from 'wouter'
+import useSEO from 'Hooks/useSEO'
 
 export default function Detail({ params }) {
-    const gifs = useGlobalGif()
+    const { gif,isLoading,isError } = useSingleGif({id:params.id})
+    const title = gif ? gif.title : ''
+    useSEO({description: `Detail of ${title}`,title:title})
 
-    const gif = gifs.find(singleGif =>
-        singleGif.id === params.id
-    )
 
-    console.log(gif)
+    if(isLoading) return <Spinner></Spinner>
+    if(isError) return <Redirect to='404'/>
+    if(!gif) return null
 
     return <>
         <h3 className="App-title">{gif.title}</h3>

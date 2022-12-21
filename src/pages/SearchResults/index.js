@@ -5,6 +5,7 @@ import Spinner from "components/Spinner";
 import {useGifs}  from "Hooks/useGifs";
 import useNearScreen from "Hooks/useNearScreen";
 import debounce from 'just-debounce-it'
+import useTitle from "Hooks/useSEO";
 
 
 export default function SearchResults({params}){
@@ -16,11 +17,15 @@ export default function SearchResults({params}){
         externalRef:loading?null:externalRef
         ,once:false
     })
-// eslint-disable-next-line
+   
+    const title=gifs?`${gifs.length} resultados de ${keyword}`: ''
+    useTitle({title})
+
+    // eslint-disable-next-line
     const debounceHandleNextPage = useCallback(debounce(
         ()=>setPage(prevPage=>prevPage+1),200
     ),[setPage])
-
+    
 
     useEffect(function(){
         console.log(isNearScreen)
