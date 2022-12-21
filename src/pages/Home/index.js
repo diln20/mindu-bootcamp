@@ -22,6 +22,7 @@ export default function Home() {
         <>
         <Helmet>
             <title>Home | Giffy</title>
+            <link rel="canonical" href="https://giffy-clone.com" />
         </Helmet>
           <SearchForm onSubmit={handleSubmit}/>           
           <div className="App-main">
