@@ -1,4 +1,4 @@
-import React,{Suspense, suspense} from 'react';
+import React,{Suspense} from 'react';
 import './App.css';
 import {Link ,Route} from "wouter";
 import Detail from './pages/Detail';

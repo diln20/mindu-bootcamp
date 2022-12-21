@@ -5,8 +5,8 @@ import Spinner from "components/Spinner";
 import {useGifs}  from "Hooks/useGifs";
 import useNearScreen from "Hooks/useNearScreen";
 import debounce from 'just-debounce-it'
-import useTitle from "Hooks/useSEO";
-
+// import useSEO from "Hooks/useSEO";
+import {Helmet} from 'react-helmet'
 
 export default function SearchResults({params}){
     const {keyword}=params
@@ -19,7 +19,7 @@ export default function SearchResults({params}){
     })
    
     const title=gifs?`${gifs.length} resultados de ${keyword}`: ''
-    useTitle({title})
+    // useSEO({title})
 
     // eslint-disable-next-line
     const debounceHandleNextPage = useCallback(debounce(
@@ -32,14 +32,21 @@ export default function SearchResults({params}){
         if (isNearScreen) debounceHandleNextPage()
     },[debounceHandleNextPage,isNearScreen])
     return <>
-        {
-            loading?
-            <Spinner/>:
-            <>
-            <h3 className="App-title">{decodeURI(keyword)}</h3>
-            <ListOfGifs gifs={gifs}/>
-                    <div id="visor" ref={externalRef}> </div>
+        {loading
+            ? <Spinner />
+            : <>
+                <Helmet>
+                    <title>{title}</title>
+                    <meta name="description" content={title} />
+                </Helmet>
+                <div className="App-wrapper">
+                    <h3 className="App-title">
+                        {decodeURI(keyword)}
+                    </h3>
+                    <ListOfGifs gifs={gifs} />
+                    <div id="visor" ref={externalRef}></div>
+                </div>
             </>
         }
-        </>
+    </>
 }
